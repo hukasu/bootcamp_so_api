@@ -3,10 +3,12 @@ use std::borrow::Cow;
 use async_trait::async_trait;
 use sqlx::PgPool;
 
-use crate::{models::{Answer, AnswerDetail}, errors};
+use crate::{
+    models::{Answer, AnswerDetail},
+    errors::{DBError, postgres_error_codes}
+};
 
 use error_stack::{IntoReport, Result, ResultExt};
-use crate::errors::DBError;
 
 #[async_trait]
 pub trait AnswersDao {
@@ -52,7 +54,7 @@ impl AnswersDao for AnswersDaoImpl {
                         match dberr.code() {
                             Some(
                                 Cow::Borrowed(
-                                    errors::postgres_error_codes::FOREIGN_KEY_VIOLATION
+                                    postgres_error_codes::FOREIGN_KEY_VIOLATION
                                 )
                             ) => Err(r).into_report().change_context(DBError::InvalidUUID(uuid.to_string())),
                             _ => Err(r).into_report().change_context(DBError::Other)
@@ -117,7 +119,7 @@ impl AnswersDao for AnswersDaoImpl {
             .await
             .into_report()
             .change_context(DBError::Other)
-            .attach_printable_lazy(|| "Failed to delete answer from database.")?;
+            .attach_printable_lazy(|| "Failed to recover answers from database.")?;
 
         // Iterate over `records` and map each record to a `AnswerDetail` type
         let answers = records.into_iter()
