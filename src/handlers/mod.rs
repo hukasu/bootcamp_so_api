@@ -29,7 +29,7 @@ pub async fn create_answer(answer: Json<Answer>) -> Json<AnswerDetail> {
 }
 
 #[get("/answer", data = "<question_uuid>")]
-pub async fn read_answers(question_uuid: Json<QuestionId>) -> Json<AnswerDetail> {
+pub async fn read_answers(question_uuid: Json<QuestionId>) -> Json<Vec<AnswerDetail>> {
     todo!()
 }
 
