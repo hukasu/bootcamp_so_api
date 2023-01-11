@@ -5,8 +5,8 @@ use sqlx::PgPool;
 
 use crate::{models::{Answer, AnswerDetail}, errors};
 
-use error_stack::{Context, IntoReport, Report, Result, ResultExt};
-use crate::errors::{DBError, postgres_error_codes};
+use error_stack::{IntoReport, Result, ResultExt};
+use crate::errors::DBError;
 
 #[async_trait]
 pub trait AnswersDao {

@@ -35,5 +35,5 @@ pub struct AnswerDetail {
 
 #[derive(Serialize, Deserialize)]
 pub struct AnswerId {
-    answer_uuid: String
+    pub answer_uuid: String
 }
